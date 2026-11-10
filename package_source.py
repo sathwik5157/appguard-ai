@@ -14,6 +14,8 @@ def package():
     paths += sorted((ROOT / "appguard").glob("*.py"))
     paths += sorted((ROOT / "tests").glob("*.py"))
     paths += sorted((ROOT / "assets").glob("*.png"))
+    paths += sorted((ROOT / "docs").glob("*.md"))
+    paths += sorted((ROOT / "docs").glob("*.pdf"))
     missing = [str(p.relative_to(ROOT)) for p in paths if not p.is_file()]
     if missing:
         raise FileNotFoundError(f"Missing package files: {missing}")
@@ -25,6 +27,18 @@ def package():
     with ZipFile(output) as archive:
         assert archive.testzip() is None
         assert not any(name.endswith((".xlsx", ".joblib", ".csv")) for name in archive.namelist())
+    # A second archive opens directly onto the repository contents to prevent
+    # accidentally uploading an extra appguard-ai parent folder in GitHub's UI.
+    root_output = ROOT / "dist/appguard-ai-github-update.zip"
+    with ZipFile(root_output, "w", ZIP_DEFLATED) as archive:
+        for path in paths:
+            archive.write(path, path.relative_to(ROOT))
+    with ZipFile(root_output) as archive:
+        assert archive.testzip() is None
+        assert "README.md" in archive.namelist()
+        assert "appguard/inference.py" in archive.namelist()
+        assert "docs/PROJECT_GUIDE.pdf" in archive.namelist()
+    print(f"Root-level GitHub upload package: {root_output}")
     print(f"Created {output} ({output.stat().st_size:,} bytes; {len(paths)} files)")
 
 
