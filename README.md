@@ -201,15 +201,3 @@ python -m pytest -q
 
 The prepared source package excludes the workbook and trained artifacts pending sharing permission. The model includes sampled feature rows for SHAP, so model sharing also requires consideration. No public live deployment is claimed.
 
-## Further reading
-
-| Document | Best for |
-|---|---|
-| [Simple project guide (PDF)](docs/PROJECT_GUIDE.pdf) | Beginner-friendly explanation and demo outline |
-| [Technical notes](docs/TECHNICAL_NOTES.md) | Detailed methodology and reproducibility |
-| [Model card](MODEL_CARD.md) | Intended use, results and limitations |
-| [Interview guide](INTERVIEW_GUIDE.md) | Explaining design choices and evaluation |
-| [Submission guide](SUBMISSION_GUIDE.md) | Publishing and deployment steps |
-
-**Next improvements:** verify provenance, test on an independent temporal holdout, evaluate calibration, and add static-code or behavioral features. This portfolio demonstrates an ML application and its evaluation; it is not production antivirus software.
-
